@@ -1,0 +1,1 @@
+This package facilitates using docassemble for document assembly from Legal Server.
