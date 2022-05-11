@@ -1,0 +1,66 @@
+metadata:
+  title: Test
+---
+mandatory: True
+code: |
+  multi_user = True
+---
+mandatory: True
+objects:
+  client: Individual
+  advocate: Person
+---
+question: |
+  What is your name?
+fields:
+  - First name: client.name.first
+  - Last name: client.name.last
+---
+question: |
+  What is your advocate's name?
+fields:
+  - Name: advocate.name.text
+---
+question: |
+  What is your Legal Server case ID?
+fields:
+  - Case ID: ls_id
+---
+mandatory: True
+code: |
+  intro
+  document_emailed
+  final_screen
+---
+question: |
+  What is your favorite fruit?
+fields:
+  - Fruit: favorite_fruit
+---
+attachment:
+  variable name: the_document
+  content: |
+    ${ client.possessive('favorite fruit') } is ${ favorite_fruit }.
+---
+template: transmittal
+subject: |
+  Fruit document for ${ client }
+content: |
+  ${ client } submitted the fruit document.
+---
+code: |
+  send_email(to=ls_id + '@pla.legalserver.org', template=transmittal, attachments=[the_document])
+  document_emailed = True
+---
+question: |
+  Welcome, ${ client }!
+subquestion: |
+  Your advocate, ${ advocate }, needs some information from you.
+continue button field: intro
+---
+prevent going back: True
+event: final_screen
+question: |
+  Thank you!
+subquestion: |
+  The document has been submitted to Philadelphia Legal Assistance.
