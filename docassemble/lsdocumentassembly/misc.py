@@ -9,7 +9,7 @@ from docassemble.webapp.server import api_verify, jsonify_with_status, jsonify
 @csrf.exempt
 @cross_origin(origins='*', methods=['POST', 'HEAD'], automatic_options=True)
 def lsapi_newsession():
-    if not api_verify(request):
+    if not api_verify():
         return jsonify_with_status({"url": "Access denied."}, 403)
     post_data = request.get_json(silent=True)
     if post_data is None:
